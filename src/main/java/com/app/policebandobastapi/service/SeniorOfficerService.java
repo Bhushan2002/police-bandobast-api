@@ -21,6 +21,7 @@ public class SeniorOfficerService {
     }
 
     public SeniorOfficer findById(Integer id) {
+        
         return repo.findById(id).orElse(null);
     }
 
@@ -46,7 +47,8 @@ public class SeniorOfficerService {
         });
     }
 
-    public void deleteById(Integer id) {
+
+    public void delete(int id){
         repo.deleteById(id);
     }
 }

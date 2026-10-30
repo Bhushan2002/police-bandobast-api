@@ -1,6 +1,5 @@
 package com.app.policebandobastapi.controller;
 
-
 import com.app.policebandobastapi.model.Shift;
 import com.app.policebandobastapi.service.ShiftService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,26 +16,39 @@ public class ShiftController {
     @Autowired
     private ShiftService service;
 
-
     @GetMapping
-    public List<Shift> findAll() {
-        return service.findAll();
+    public ResponseEntity<List<Shift>> findAll() {
+        try {
+
+            if (service.findAll().isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Shift> findById(@PathVariable int id) {
-        Optional<Shift> shift = service.findById(id);
-        if (shift.isEmpty()) {
-            return ResponseEntity.notFound().build();
+        try {
+
+            Optional<Shift> shift = service.findById(id);
+            if (shift.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<Shift>(shift.get(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return ResponseEntity.ok(shift.get());
     }
 
     @PostMapping
     public ResponseEntity<Shift> save(@RequestBody Shift shift) {
         try {
             Shift saved = service.save(shift);
-            return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+            return new ResponseEntity<Shift>(saved, HttpStatus.CREATED);
+
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -56,11 +68,15 @@ public class ShiftController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
-        boolean deleted = service.delete(id);
-        if (!deleted) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<String> delete(@PathVariable int id) {
+        try {
+            boolean deleted = service.delete(id);
+            if (!deleted) {
+                return new ResponseEntity<>("Shift not found", HttpStatus.NOT_FOUND);
+            }
+            return ResponseEntity.noContent().build();
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.noContent().build();
     }
 }

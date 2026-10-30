@@ -33,8 +33,8 @@ public class ShiftService {
     public Optional<Shift> update(int id, Shift shift) {
         return repo.findById(id).map(existing -> {
             existing.setName(shift.getName());
-            existing.setStartDate(shift.getStartDate());
-            existing.setEndDate(shift.getEndDate());
+            existing.setStartTime(shift.getStartTime());
+            existing.setEndTime(shift.getEndTime());
             existing.setShiftType(shift.getShiftType());
             existing.setDayOffAfter24hr(shift.isDayOffAfter24hr());
             if (shift.getStatus() != null) {
