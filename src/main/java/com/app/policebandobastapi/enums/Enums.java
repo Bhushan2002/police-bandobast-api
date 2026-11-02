@@ -11,9 +11,6 @@ public final class Enums {
     }
 
 
-    public enum Status {
-        ACTIVE, INACTIVE
-    }
 
     public enum RecordStatus {
         ACTIVE, INACTIVE
