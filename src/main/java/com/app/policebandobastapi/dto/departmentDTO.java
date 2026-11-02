@@ -1,6 +1,16 @@
 package com.app.policebandobastapi.dto;
 
-public class departmentDTO {
-    
-    
+import com.app.policebandobastapi.enums.Enums.RecordStatus;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class DepartmentDto {
+    private int id;
+    private String name;
+    private RecordStatus status;
 }

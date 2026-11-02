@@ -2,8 +2,8 @@ package com.app.policebandobastapi.model;
 
 
 import com.app.policebandobastapi.enums.Enums;
+import com.app.policebandobastapi.enums.Enums.RecordStatus;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +23,5 @@ public class RejectionTemplate {
     private int policeStationId;
     private String description;
     @Enumerated(EnumType.STRING)
-    private Enums.Status status;
-
-
+    private RecordStatus status;
 }

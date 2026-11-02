@@ -1,7 +1,7 @@
 package com.app.policebandobastapi.model;
 
 
-import com.app.policebandobastapi.enums.Enums.Status;
+import com.app.policebandobastapi.enums.Enums.RecordStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -22,5 +22,5 @@ public class Designation {
     private int id;
     private String name;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private RecordStatus status;
 }

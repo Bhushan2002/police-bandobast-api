@@ -24,6 +24,6 @@ public class Employees {
     @Enumerated(EnumType.STRING)
     private Enums.ForceCategory forceCategory;
     @Enumerated(EnumType.STRING)
-    private Enums.Status status;
+    private Enums.RecordStatus status;
 
 }

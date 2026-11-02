@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@AllArgsConstructor
+@AllArgsConstructor 
 @NoArgsConstructor
 @Data
 public class InstructionTemplate {
@@ -18,7 +18,7 @@ public class InstructionTemplate {
     private String title;
     private String description;
     @Enumerated(EnumType.STRING)
-    private Enums.Status status;
+    private Enums.RecordStatus status;
 
 
 }

@@ -1,8 +1,6 @@
 package com.app.policebandobastapi.controller;
 
-import com.app.policebandobastapi.model.Headquarter;
-import com.app.policebandobastapi.model.SeniorOfficer;
-import com.app.policebandobastapi.repository.DepartmentRepo;
+import com.app.policebandobastapi.dto.SeniorOfficerDto;
 import com.app.policebandobastapi.service.SeniorOfficerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,84 +9,36 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// Errors (not found, bad request, duplicate) are thrown by the service and handled by GlobalExceptionHandler
 @RestController
 @RequestMapping("/api/v1/senior-officer")
 public class SeniorOfficerController {
-
-    private final DepartmentRepo departmentRepo;
     @Autowired
     private SeniorOfficerService service;
 
-    SeniorOfficerController(DepartmentRepo departmentRepo) {
-        this.departmentRepo = departmentRepo;
-    }
-
-    @PostMapping
-    public ResponseEntity<SeniorOfficer> save(@RequestBody SeniorOfficer seniorOfficer) {
-        try {
-
-            if (seniorOfficer == null) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-            return new ResponseEntity<>(service.save(seniorOfficer), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
     @GetMapping
-    public ResponseEntity<List<SeniorOfficer>> getAll() {
-        try {
-
-            if (service.findAll().isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public List<SeniorOfficerDto> findAll() {
+        return service.getAllSeniorOfficer();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SeniorOfficer> getById(@PathVariable int id) {
+    public ResponseEntity<SeniorOfficerDto> findById(@PathVariable int id) {
+        return ResponseEntity.ok(service.findById(id));
+    }
 
-        try {
-            SeniorOfficer seniorOfficer = service.findById(id);
-            if (seniorOfficer == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(seniorOfficer, HttpStatus.OK);
-
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    @PostMapping
+    public ResponseEntity<SeniorOfficerDto> save(@RequestBody SeniorOfficerDto seniorOfficer) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.addSeniorOfficer(seniorOfficer));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SeniorOfficerService> update(@PathVariable int id, @RequestBody SeniorOfficer seniorOfficer) {
-
-        try {
-            service.update(id, seniorOfficer);
-            return new ResponseEntity<>(HttpStatus.OK);
-
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<SeniorOfficerDto> update(@PathVariable int id, @RequestBody SeniorOfficerDto seniorOfficer) {
+        return ResponseEntity.ok(service.updateSeniorOfficer(id, seniorOfficer));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable int id) {
-        try {
-            SeniorOfficer existingSo = service.findById(id);
-            if (existingSo != null) {
-                service.delete(id);
-                return new ResponseEntity<String>("Senior Officer deleted successfully", HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("Senior Officer not found", HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error deleting senior officer: " + e.getMessage(),
-                    HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<Void> delete(@PathVariable int id) {
+        service.deleteSeniorOfficer(id);
+        return ResponseEntity.noContent().build();
     }
 }

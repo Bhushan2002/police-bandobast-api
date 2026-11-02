@@ -1,6 +1,8 @@
 package com.app.policebandobastapi.model;
 
 import com.app.policebandobastapi.enums.Enums;
+import com.app.policebandobastapi.enums.Enums.RecordStatus;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +25,7 @@ public class Headquarter {
     private int id;
 
     private String name;
-    private String designationId;
+    private int designationId;
     private String mobile;
     private String email;
     private int departmentId;
@@ -34,5 +36,5 @@ public class Headquarter {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate appointmentTo;
     @Enumerated(EnumType.STRING)
-    private Enums.Status status;
+    private RecordStatus status;
 }

@@ -2,6 +2,8 @@ package com.app.policebandobastapi.model;
 
 
 import com.app.policebandobastapi.enums.Enums;
+import com.app.policebandobastapi.enums.Enums.RecordStatus;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,7 +29,7 @@ public class SeniorOfficer {
     private Date appointmentDateFrom;
     private Date appointmentDateTo;
     @Enumerated(EnumType.STRING)
-    private Enums.Status status;
+    private RecordStatus status;
 
 
 }

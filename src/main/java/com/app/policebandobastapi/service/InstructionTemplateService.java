@@ -2,47 +2,18 @@ package com.app.policebandobastapi.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.app.policebandobastapi.dto.InstructionTemplateDto;
 
-import com.app.policebandobastapi.model.InstructionTemplate;
-import com.app.policebandobastapi.repository.InstructionTemplateRepo;
+public interface InstructionTemplateService {
 
-@Service 
-public class InstructionTemplateService {
-    
-    @Autowired 
-    private InstructionTemplateRepo repo;
+    public InstructionTemplateDto addInstructionTemplate(InstructionTemplateDto instructionTemplate);
 
+    public List<InstructionTemplateDto> getAllInstructionTemplate();
 
+    public InstructionTemplateDto findById(int id);
 
-    public InstructionTemplate save (InstructionTemplate instructionTemplate){
-        return repo.save(instructionTemplate);
-    }
+    public InstructionTemplateDto updateInstructionTemplate(int id, InstructionTemplateDto instructionTemplate);
 
+    public void deleteInstructionTemplate(int id);
 
-    public List<InstructionTemplate> getAll(){
-        return repo.findAll();
-    }
-
-    public InstructionTemplate findById(int id){
-        return repo.findById(id).get();
-    }
-
-    public InstructionTemplate update(InstructionTemplate instructionTemplate, int id){
-        return repo.findById(id).map(existing -> {
-            existing.setTitle(instructionTemplate.getTitle());
-            existing.setDescription(instructionTemplate.getDescription());
-            existing.setStatus(instructionTemplate.getStatus());
-            return repo.save(existing);
-        }).orElseThrow(() -> new RuntimeException("Instruction Template not found with id " + id));
-    }
-
-    public void delete(int id){
-        repo.deleteById(id);
-    }
-
-
-
-    
 }

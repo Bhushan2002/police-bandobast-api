@@ -1,54 +1,19 @@
 package com.app.policebandobastapi.service;
 
-
-import com.app.policebandobastapi.model.SeniorOfficer;
-import com.app.policebandobastapi.repository.SeniorOfficerRepo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
 
-@Service
-public class SeniorOfficerService {
+import com.app.policebandobastapi.dto.SeniorOfficerDto;
 
-    @Autowired
-    private SeniorOfficerRepo repo;
+public interface SeniorOfficerService {
 
+    public SeniorOfficerDto addSeniorOfficer(SeniorOfficerDto seniorOfficer);
 
-    public SeniorOfficer save(SeniorOfficer so) {
-        return repo.save(so);
-    }
+    public List<SeniorOfficerDto> getAllSeniorOfficer();
 
-    public SeniorOfficer findById(Integer id) {
-        
-        return repo.findById(id).orElse(null);
-    }
+    public SeniorOfficerDto findById(int id);
 
-    public List<SeniorOfficer> findAll() {
-        return repo.findAll();
-    }
+    public SeniorOfficerDto updateSeniorOfficer(int id, SeniorOfficerDto seniorOfficer);
 
-    public Optional<SeniorOfficer> update(int id, SeniorOfficer so) {
-        return repo.findById(id).map(existing -> {
-            existing.setName(so.getName());
-            existing.setDesignationId(so.getDesignationId());
-            existing.setMobile(so.getMobile());
-            existing.setEmial(so.getEmial());
-            existing.setDepartmentId(so.getDepartmentId());
-            existing.setServiceBookNo(so.getServiceBookNo());
-            existing.setPost(so.getPost());
-            existing.setAppointmentDateFrom(so.getAppointmentDateFrom());
-            existing.setAppointmentDateTo(so.getAppointmentDateTo());
-            if (so.getStatus() != null) {
-                existing.setStatus(so.getStatus());
-            }
-            return repo.save(existing);
-        });
-    }
+    public void deleteSeniorOfficer(int id);
 
-
-    public void delete(int id){
-        repo.deleteById(id);
-    }
 }

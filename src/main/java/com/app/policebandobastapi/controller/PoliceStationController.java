@@ -1,8 +1,6 @@
 package com.app.policebandobastapi.controller;
 
-
-import com.app.policebandobastapi.model.Department;
-import com.app.policebandobastapi.model.PoliceStation;
+import com.app.policebandobastapi.dto.PoliceStationDto;
 import com.app.policebandobastapi.service.PoliceStationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,87 +8,37 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
+// Errors (not found, bad request, duplicate) are thrown by the service and handled by GlobalExceptionHandler
 @RestController
 @RequestMapping("/api/v1/police-station")
 public class PoliceStationController {
     @Autowired
     private PoliceStationService service;
 
-
-    @PostMapping
-    public ResponseEntity<PoliceStation> save(@RequestBody PoliceStation policeStation) {
-        try {
-            if (policeStation == null) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-            service.save(policeStation);
-
-            return new ResponseEntity<>(policeStation, HttpStatus.CREATED); 
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-
     @GetMapping
-    public ResponseEntity<List<PoliceStation>> getAll() {
-        try {
-            if (service.findAll().isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return ResponseEntity.status(HttpStatus.OK).body(service.findAll());
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public List<PoliceStationDto> findAll() {
+        return service.getAllPoliceStation();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PoliceStation> getById(@PathVariable int id) {
-        try {
-
-            PoliceStation ps = service.findById(id);
-
-            if (ps == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            return ResponseEntity.status(HttpStatus.OK).body(ps);
-
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
-        }
+    public ResponseEntity<PoliceStationDto> findById(@PathVariable int id) {
+        return ResponseEntity.ok(service.findById(id));
     }
 
+    @PostMapping
+    public ResponseEntity<PoliceStationDto> save(@RequestBody PoliceStationDto policeStation) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.addPoliceStation(policeStation));
+    }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PoliceStation> update(@PathVariable int id, @RequestBody PoliceStation policeStation) {
-
-        try {
-            Optional<PoliceStation> updated = service.update(policeStation, id);
-            if (updated.isEmpty()) {
-                return ResponseEntity.notFound().build();
-            }
-            return ResponseEntity.ok(updated.get());
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<PoliceStationDto> update(@PathVariable int id, @RequestBody PoliceStationDto policeStation) {
+        return ResponseEntity.ok(service.updatePoliceStation(id, policeStation));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable int id) {
-        PoliceStation ps = service.findById(id);
-        try {
-            if (ps != null) {
-                service.delete(id);
-                return new ResponseEntity<>("Deleted Successfully", HttpStatus.OK);
-            }
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
+    public ResponseEntity<Void> delete(@PathVariable int id) {
+        service.deletePoliceStation(id);
+        return ResponseEntity.noContent().build();
     }
-
 }

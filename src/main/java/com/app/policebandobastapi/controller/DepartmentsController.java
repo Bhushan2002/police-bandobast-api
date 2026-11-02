@@ -1,7 +1,6 @@
 package com.app.policebandobastapi.controller;
 
-
-import com.app.policebandobastapi.model.Department;
+import com.app.policebandobastapi.dto.DepartmentDto;
 import com.app.policebandobastapi.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,64 +8,37 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
+// Errors (not found, bad request, duplicate) are thrown by the service and handled by GlobalExceptionHandler
 @RestController
 @RequestMapping("/api/v1/department")
 public class DepartmentsController {
     @Autowired
     private DepartmentService service;
 
-
     @GetMapping
-    public List<Department> findAll() {
-        return service.findAll();
+    public List<DepartmentDto> findAll() {
+        return service.getAllDepartment();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Department> findById(@PathVariable int id) {
-        Optional<Department> department = service.findById(id);
-        if (department.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(department.get());
+    public ResponseEntity<DepartmentDto> findById(@PathVariable int id) {
+        return ResponseEntity.ok(service.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Department> save(@RequestBody Department department) {
-        try {
-            Department saved = service.save(department);
-            return ResponseEntity.status(HttpStatus.CREATED).body(saved);
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public ResponseEntity<DepartmentDto> save(@RequestBody DepartmentDto department) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.addDepartment(department));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Department> update(@PathVariable int id, @RequestBody Department department) {
-        try {
-            Optional<Department> updated = service.update(id, department);
-            if (updated.isEmpty()) {
-                return ResponseEntity.notFound().build();
-            }
-            return ResponseEntity.ok(updated.get());
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public ResponseEntity<DepartmentDto> update(@PathVariable int id, @RequestBody DepartmentDto department) {
+        return ResponseEntity.ok(service.updateDepartment(id, department));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
-
-        boolean deleted = service.delete(id);
-        try {
-
-            if (!deleted) {
-                return ResponseEntity.notFound().build();
-            }
-            return ResponseEntity.noContent().build();
-        }catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        service.deleteDepartment(id);
+        return ResponseEntity.noContent().build();
     }
 }

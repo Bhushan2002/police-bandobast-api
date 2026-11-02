@@ -1,97 +1,44 @@
-
 package com.app.policebandobastapi.controller;
+
+import com.app.policebandobastapi.dto.RejectionTemplateDto;
+import com.app.policebandobastapi.service.RejectionTemplateService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.app.policebandobastapi.model.RejectionTemplate;
-import com.app.policebandobastapi.service.RejectionTemplateService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-
+// Errors (not found, bad request, duplicate) are thrown by the service and handled by GlobalExceptionHandler
 @RestController
 @RequestMapping("/api/v1/rejection-template")
 public class RejectionTemplateController {
-
     @Autowired
     private RejectionTemplateService service;
 
-    @PostMapping
-    public ResponseEntity<RejectionTemplate> save(@RequestBody RejectionTemplate rejectionTemplate) {
-        try {
-            if (rejectionTemplate == null) {
-                return ResponseEntity.badRequest().build();
-            } else {
-                RejectionTemplate savedTemplate = service.save(rejectionTemplate);
-                return ResponseEntity.ok(savedTemplate);
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(500).build();
-        }
+    @GetMapping
+    public List<RejectionTemplateDto> findAll() {
+        return service.getAllRejectionTemplate();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RejectionTemplate> getById(@PathVariable int id) {
-
-        try {
-            RejectionTemplate template = service.findById(id);
-            if (template == null) {
-                return ResponseEntity.notFound().build();
-            } else {
-                return ResponseEntity.ok(template);
-            }
-        } catch (NumberFormatException e) {
-            return ResponseEntity.badRequest().build();
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+    public ResponseEntity<RejectionTemplateDto> findById(@PathVariable int id) {
+        return ResponseEntity.ok(service.findById(id));
     }
 
-    @GetMapping
-    public ResponseEntity<List<RejectionTemplate>> getall() {
-        try {
-            if (service.getAll().isEmpty()) {
-                return ResponseEntity.noContent().build();
-            } else {
-                return ResponseEntity.ok(service.getAll());
-            }
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+    @PostMapping
+    public ResponseEntity<RejectionTemplateDto> save(@RequestBody RejectionTemplateDto rejectionTemplate) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.addRejectionTemplate(rejectionTemplate));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RejectionTemplate> update(@PathVariable int id,
-            @RequestBody RejectionTemplate rejectionTemplate) {
-
-        try {
-            RejectionTemplate updatedTemplate = service.update(rejectionTemplate, id);
-            if (updatedTemplate == null) {
-                return ResponseEntity.notFound().build();
-            } else {
-                return ResponseEntity.ok(updatedTemplate);
-            }
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+    public ResponseEntity<RejectionTemplateDto> update(@PathVariable int id, @RequestBody RejectionTemplateDto rejectionTemplate) {
+        return ResponseEntity.ok(service.updateRejectionTemplate(id, rejectionTemplate));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
-        try {
-            service.delete(id);
-            return ResponseEntity.status(204).build();
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+        service.deleteRejectionTemplate(id);
+        return ResponseEntity.noContent().build();
     }
-
 }

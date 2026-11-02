@@ -20,6 +20,10 @@ public class BandobastTypeServiceImpl implements BandobastTypeService {
     @Autowired
     private BandobastTypeRepo repo;
 
+
+
+
+    // save new bandobast
     @Override
     public BandobastTypeDto addBandobastType(BandobastTypeDto bandobastTypeDto) {
         String name = validateName(bandobastTypeDto);
@@ -36,9 +40,16 @@ public class BandobastTypeServiceImpl implements BandobastTypeService {
         return toDto(repo.save(bandobastType));
     }
 
+
+
+    // get All Bandobast Types 
     @Override
     public List<BandobastTypeDto> getAllBandobastType() {
-        return repo.findAll().stream().map(this::toDto).toList();
+        List<BandobastType> bandobastTypes = repo.findAll();
+
+        return bandobastTypes.stream()
+                .map(bandobastType -> toDto(bandobastType))
+                .toList();
     }
 
     @Override

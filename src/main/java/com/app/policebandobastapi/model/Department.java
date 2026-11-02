@@ -1,6 +1,6 @@
 package com.app.policebandobastapi.model;
 
-import com.app.policebandobastapi.enums.Enums.Status;
+import com.app.policebandobastapi.enums.Enums.RecordStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -21,7 +21,7 @@ public class Department {
     private int id;
     private String name;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private RecordStatus status;
 
     public int getId() {
         return id;
@@ -39,11 +39,11 @@ public class Department {
         this.name = name;
     }
 
-    public Status getStatus() {
+    public RecordStatus getStatus() {
         return status;
+    
     }
-
-    public void setStatus(Status status) {
+    public void setStatus(RecordStatus status) {
         this.status = status;
     }
 
