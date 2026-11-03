@@ -12,6 +12,7 @@ import com.app.policebandobastapi.exception.ResourceNotFoundException;
 import com.app.policebandobastapi.model.InstructionTemplate;
 import com.app.policebandobastapi.repository.InstructionTemplateRepo;
 import com.app.policebandobastapi.service.InstructionTemplateService;
+import com.app.policebandobastapi.util.ValidationUtils;
 
 @Service
 public class InstructionTemplateServiceImpl implements InstructionTemplateService {
@@ -41,12 +42,12 @@ public class InstructionTemplateServiceImpl implements InstructionTemplateServic
     }
 
     @Override
-    public InstructionTemplateDto findById(int id) {
+    public InstructionTemplateDto findById(Long id) {
         return toDto(getExisting(id));
     }
 
     @Override
-    public InstructionTemplateDto updateInstructionTemplate(int id, InstructionTemplateDto instructionTemplateDto) {
+    public InstructionTemplateDto updateInstructionTemplate(Long id, InstructionTemplateDto instructionTemplateDto) {
         InstructionTemplate existing = getExisting(id);
         validate(instructionTemplateDto);
 
@@ -59,19 +60,23 @@ public class InstructionTemplateServiceImpl implements InstructionTemplateServic
     }
 
     @Override
-    public void deleteInstructionTemplate(int id) {
+    public void deleteInstructionTemplate(Long id) {
         InstructionTemplate existing = getExisting(id);
         repo.delete(existing);
     }
 
-    private InstructionTemplate getExisting(int id) {
+    private InstructionTemplate getExisting(Long id) {
         return repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Instruction template", id));
     }
 
     private void validate(InstructionTemplateDto dto) {
-        if (dto == null || dto.getTitle() == null || dto.getTitle().isBlank()) {
-            throw new BadRequestException("Instruction template title is required");
+        if (dto == null) {
+            throw new BadRequestException("Instruction template details are required");
+        }
+        ValidationUtils.requireText(dto.getTitle(), "Instruction template title", 200);
+        if (dto.getDescription() == null || dto.getDescription().isBlank()) {
+            throw new BadRequestException("Instruction template description is required");
         }
     }
 

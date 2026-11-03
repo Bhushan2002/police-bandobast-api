@@ -22,7 +22,7 @@ public class HeadquartersController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<HeadquarterDto> findById(@PathVariable int id) {
+    public ResponseEntity<HeadquarterDto> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
@@ -32,12 +32,12 @@ public class HeadquartersController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HeadquarterDto> update(@PathVariable int id, @RequestBody HeadquarterDto headquarter) {
+    public ResponseEntity<HeadquarterDto> update(@PathVariable Long id, @RequestBody HeadquarterDto headquarter) {
         return ResponseEntity.ok(service.updateHeadquarter(id, headquarter));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deleteHeadquarter(id);
         return ResponseEntity.noContent().build();
     }

@@ -1,9 +1,9 @@
 package com.app.policebandobastapi.repository;
 
-import com.app.policebandobastapi.model.Employees;
+import com.app.policebandobastapi.model.ShowCauseNotice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EmployeesRepo extends JpaRepository<Employees, Integer> {
+public interface ShowCauseNoticeRepo extends JpaRepository<ShowCauseNotice, Long> {
 }

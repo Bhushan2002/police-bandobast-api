@@ -10,10 +10,10 @@ public interface InstructionTemplateService {
 
     public List<InstructionTemplateDto> getAllInstructionTemplate();
 
-    public InstructionTemplateDto findById(int id);
+    public InstructionTemplateDto findById(Long id);
 
-    public InstructionTemplateDto updateInstructionTemplate(int id, InstructionTemplateDto instructionTemplate);
+    public InstructionTemplateDto updateInstructionTemplate(Long id, InstructionTemplateDto instructionTemplate);
 
-    public void deleteInstructionTemplate(int id);
+    public void deleteInstructionTemplate(Long id);
 
 }

@@ -22,7 +22,7 @@ public class DepartmentsController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DepartmentDto> findById(@PathVariable int id) {
+    public ResponseEntity<DepartmentDto> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
@@ -32,12 +32,12 @@ public class DepartmentsController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DepartmentDto> update(@PathVariable int id, @RequestBody DepartmentDto department) {
+    public ResponseEntity<DepartmentDto> update(@PathVariable Long id, @RequestBody DepartmentDto department) {
         return ResponseEntity.ok(service.updateDepartment(id, department));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deleteDepartment(id);
         return ResponseEntity.noContent().build();
     }

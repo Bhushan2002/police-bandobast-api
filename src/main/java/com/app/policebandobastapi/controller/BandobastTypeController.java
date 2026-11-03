@@ -22,7 +22,7 @@ public class BandobastTypeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BandobastTypeDto> findById(@PathVariable int id) {
+    public ResponseEntity<BandobastTypeDto> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
@@ -32,12 +32,12 @@ public class BandobastTypeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BandobastTypeDto> update(@PathVariable int id, @RequestBody BandobastTypeDto bandobastType) {
+    public ResponseEntity<BandobastTypeDto> update(@PathVariable Long id, @RequestBody BandobastTypeDto bandobastType) {
         return ResponseEntity.ok(service.updateBandobastType(id, bandobastType));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deleteBandobastType(id);
         return ResponseEntity.noContent().build();
     }

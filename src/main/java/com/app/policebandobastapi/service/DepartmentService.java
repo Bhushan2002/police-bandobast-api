@@ -10,10 +10,10 @@ public interface DepartmentService {
 
     public List<DepartmentDto> getAllDepartment();
 
-    public DepartmentDto findById(int id);
+    public DepartmentDto findById(Long id);
 
-    public DepartmentDto updateDepartment(int id, DepartmentDto department);
+    public DepartmentDto updateDepartment(Long id, DepartmentDto department);
 
-    public void deleteDepartment(int id);
+    public void deleteDepartment(Long id);
 
 }

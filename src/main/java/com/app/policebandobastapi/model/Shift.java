@@ -23,7 +23,7 @@ import java.time.LocalTime;
 public class Shift {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String name;
     @JsonFormat(pattern = "HH:mm")
     private LocalTime startTime;

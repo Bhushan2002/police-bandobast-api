@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RejectionTemplateDto {
-    private int id;
+    private Long id;
     private String title;
     private TemplateType type;
-    private int policeStationId;
+    private Long policeStationId;
     private String description;
     private RecordStatus status;
 }

@@ -10,10 +10,10 @@ public interface HeadquarterService {
 
     public List<HeadquarterDto> getAllHeadquarter();
 
-    public HeadquarterDto findById(int id);
+    public HeadquarterDto findById(Long id);
 
-    public HeadquarterDto updateHeadquarter(int id, HeadquarterDto headquarter);
+    public HeadquarterDto updateHeadquarter(Long id, HeadquarterDto headquarter);
 
-    public void deleteHeadquarter(int id);
+    public void deleteHeadquarter(Long id);
 
 }

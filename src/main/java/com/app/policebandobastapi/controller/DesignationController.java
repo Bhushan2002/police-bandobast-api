@@ -22,7 +22,7 @@ public class DesignationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DesignationDto> findById(@PathVariable int id) {
+    public ResponseEntity<DesignationDto> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
@@ -32,12 +32,12 @@ public class DesignationController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DesignationDto> update(@PathVariable int id, @RequestBody DesignationDto designation) {
+    public ResponseEntity<DesignationDto> update(@PathVariable Long id, @RequestBody DesignationDto designation) {
         return ResponseEntity.ok(service.updateDesignation(id, designation));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deleteDesignation(id);
         return ResponseEntity.noContent().build();
     }

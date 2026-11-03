@@ -13,12 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class HeadquarterDto {
-    private int id;
+    private Long id;
     private String name;
-    private int designationId;
+    private Long designationId;
     private String mobile;
     private String email;
-    private int departmentId;
+    private Long departmentId;
     private String serviceBookNo;
     private String post;
     @JsonFormat(pattern = "dd-MM-yyyy")

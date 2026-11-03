@@ -10,10 +10,10 @@ public interface SeniorOfficerService {
 
     public List<SeniorOfficerDto> getAllSeniorOfficer();
 
-    public SeniorOfficerDto findById(int id);
+    public SeniorOfficerDto findById(Long id);
 
-    public SeniorOfficerDto updateSeniorOfficer(int id, SeniorOfficerDto seniorOfficer);
+    public SeniorOfficerDto updateSeniorOfficer(Long id, SeniorOfficerDto seniorOfficer);
 
-    public void deleteSeniorOfficer(int id);
+    public void deleteSeniorOfficer(Long id);
 
 }

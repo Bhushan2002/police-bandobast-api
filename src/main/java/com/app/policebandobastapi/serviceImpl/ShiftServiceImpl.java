@@ -13,6 +13,7 @@ import com.app.policebandobastapi.exception.ResourceNotFoundException;
 import com.app.policebandobastapi.model.Shift;
 import com.app.policebandobastapi.repository.ShiftRepo;
 import com.app.policebandobastapi.service.ShiftService;
+import com.app.policebandobastapi.util.ValidationUtils;
 
 @Service
 public class ShiftServiceImpl implements ShiftService {
@@ -46,12 +47,12 @@ public class ShiftServiceImpl implements ShiftService {
     }
 
     @Override
-    public ShiftDto findById(int id) {
+    public ShiftDto findById(Long id) {
         return toDto(getExisting(id));
     }
 
     @Override
-    public ShiftDto updateShift(int id, ShiftDto shiftDto) {
+    public ShiftDto updateShift(Long id, ShiftDto shiftDto) {
         Shift existing = getExisting(id);
         validate(shiftDto);
         String name = shiftDto.getName().trim();
@@ -68,20 +69,21 @@ public class ShiftServiceImpl implements ShiftService {
     }
 
     @Override
-    public void deleteShift(int id) {
+    public void deleteShift(Long id) {
         Shift existing = getExisting(id);
         repo.delete(existing);
     }
 
-    private Shift getExisting(int id) {
+    private Shift getExisting(Long id) {
         return repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Shift", id));
     }
 
     private void validate(ShiftDto dto) {
-        if (dto == null || dto.getName() == null || dto.getName().isBlank()) {
-            throw new BadRequestException("Shift name is required");
+        if (dto == null) {
+            throw new BadRequestException("Shift details are required");
         }
+        ValidationUtils.requireText(dto.getName(), "Shift name", 100);
         if (dto.getStartTime() == null || dto.getEndTime() == null) {
             throw new BadRequestException("Shift start time and end time are required");
         }

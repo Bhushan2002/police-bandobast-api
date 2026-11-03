@@ -13,6 +13,7 @@ import com.app.policebandobastapi.exception.ResourceNotFoundException;
 import com.app.policebandobastapi.model.BandobastType;
 import com.app.policebandobastapi.repository.BandobastTypeRepo;
 import com.app.policebandobastapi.service.BandobastTypeService;
+import com.app.policebandobastapi.util.ValidationUtils;
 
 @Service
 public class BandobastTypeServiceImpl implements BandobastTypeService {
@@ -32,7 +33,7 @@ public class BandobastTypeServiceImpl implements BandobastTypeService {
         }
 
         BandobastType bandobastType = toEntity(bandobastTypeDto);
-        bandobastType.setId(0); // let the database generate the id
+        bandobastType.setId(null); // let the database generate the id
         bandobastType.setName(name);
         if (bandobastType.getStatus() == null) {
             bandobastType.setStatus(RecordStatus.ACTIVE);
@@ -53,12 +54,12 @@ public class BandobastTypeServiceImpl implements BandobastTypeService {
     }
 
     @Override
-    public BandobastTypeDto findById(int id) {
+    public BandobastTypeDto findById(Long id) {
         return toDto(getExisting(id));
     }
 
     @Override
-    public BandobastTypeDto updateBandobastType(int id, BandobastTypeDto bandobastTypeDto) {
+    public BandobastTypeDto updateBandobastType(Long id, BandobastTypeDto bandobastTypeDto) {
         BandobastType existing = getExisting(id);
         String name = validateName(bandobastTypeDto);
         if (repo.existsByNameIgnoreCaseAndIdNot(name, id)) {
@@ -74,7 +75,7 @@ public class BandobastTypeServiceImpl implements BandobastTypeService {
 
     // Soft delete: keeps the row so records that reference it stay valid
     @Override
-    public void deleteBandobastType(int id) {
+    public void deleteBandobastType(Long id) {
         BandobastType existing = getExisting(id);
         if (existing.getStatus() == RecordStatus.INACTIVE) {
             throw new BadRequestException("Bandobast type with id " + id + " is already inactive");
@@ -83,15 +84,16 @@ public class BandobastTypeServiceImpl implements BandobastTypeService {
         repo.save(existing);
     }
 
-    private BandobastType getExisting(int id) {
+    private BandobastType getExisting(Long id) {
         return repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Bandobast type", id));
     }
 
     private String validateName(BandobastTypeDto dto) {
-        if (dto == null || dto.getName() == null || dto.getName().isBlank()) {
-            throw new BadRequestException("Bandobast type name is required");
+        if (dto == null) {
+            throw new BadRequestException("Bandobast type details are required");
         }
+        ValidationUtils.requireText(dto.getName(), "Bandobast type name", 150);
         return dto.getName().trim();
     }
 

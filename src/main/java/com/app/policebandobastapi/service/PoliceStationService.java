@@ -10,10 +10,10 @@ public interface PoliceStationService {
 
     public List<PoliceStationDto> getAllPoliceStation();
 
-    public PoliceStationDto findById(int id);
+    public PoliceStationDto findById(Long id);
 
-    public PoliceStationDto updatePoliceStation(int id, PoliceStationDto policeStation);
+    public PoliceStationDto updatePoliceStation(Long id, PoliceStationDto policeStation);
 
-    public void deletePoliceStation(int id);
+    public void deletePoliceStation(Long id);
 
 }

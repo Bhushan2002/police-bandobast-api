@@ -22,7 +22,7 @@ public class SeniorOfficerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SeniorOfficerDto> findById(@PathVariable int id) {
+    public ResponseEntity<SeniorOfficerDto> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
@@ -32,12 +32,12 @@ public class SeniorOfficerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SeniorOfficerDto> update(@PathVariable int id, @RequestBody SeniorOfficerDto seniorOfficer) {
+    public ResponseEntity<SeniorOfficerDto> update(@PathVariable Long id, @RequestBody SeniorOfficerDto seniorOfficer) {
         return ResponseEntity.ok(service.updateSeniorOfficer(id, seniorOfficer));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deleteSeniorOfficer(id);
         return ResponseEntity.noContent().build();
     }

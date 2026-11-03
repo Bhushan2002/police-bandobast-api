@@ -10,14 +10,19 @@ import com.app.policebandobastapi.enums.Enums.RecordStatus;
 import com.app.policebandobastapi.exception.BadRequestException;
 import com.app.policebandobastapi.exception.ResourceNotFoundException;
 import com.app.policebandobastapi.model.RejectionTemplate;
+import com.app.policebandobastapi.repository.PoliceStationRepo;
 import com.app.policebandobastapi.repository.RejectionTemplateRepo;
 import com.app.policebandobastapi.service.RejectionTemplateService;
+import com.app.policebandobastapi.util.ValidationUtils;
 
 @Service
 public class RejectionTemplateServiceImpl implements RejectionTemplateService {
 
     @Autowired
     private RejectionTemplateRepo repo;
+
+    @Autowired
+    private PoliceStationRepo policeStationRepo;
 
     @Override
     public RejectionTemplateDto addRejectionTemplate(RejectionTemplateDto rejectionTemplateDto) {
@@ -41,12 +46,12 @@ public class RejectionTemplateServiceImpl implements RejectionTemplateService {
     }
 
     @Override
-    public RejectionTemplateDto findById(int id) {
+    public RejectionTemplateDto findById(Long id) {
         return toDto(getExisting(id));
     }
 
     @Override
-    public RejectionTemplateDto updateRejectionTemplate(int id, RejectionTemplateDto rejectionTemplateDto) {
+    public RejectionTemplateDto updateRejectionTemplate(Long id, RejectionTemplateDto rejectionTemplateDto) {
         RejectionTemplate existing = getExisting(id);
         validate(rejectionTemplateDto);
 
@@ -59,23 +64,26 @@ public class RejectionTemplateServiceImpl implements RejectionTemplateService {
     }
 
     @Override
-    public void deleteRejectionTemplate(int id) {
+    public void deleteRejectionTemplate(Long id) {
         RejectionTemplate existing = getExisting(id);
         repo.delete(existing);
     }
 
-    private RejectionTemplate getExisting(int id) {
+    private RejectionTemplate getExisting(Long id) {
         return repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Rejection template", id));
     }
 
+    // policeStationId is optional: null means the template is available to all stations
     private void validate(RejectionTemplateDto dto) {
-        if (dto == null || dto.getTitle() == null || dto.getTitle().isBlank()) {
-            throw new BadRequestException("Rejection template title is required");
+        if (dto == null) {
+            throw new BadRequestException("Rejection template details are required");
         }
+        ValidationUtils.requireText(dto.getTitle(), "Rejection template title", 200);
         if (dto.getType() == null) {
             throw new BadRequestException("Rejection template type is required");
         }
+        ValidationUtils.optionalExists(policeStationRepo, dto.getPoliceStationId(), "Police station");
     }
 
     private void copyToEntity(RejectionTemplateDto dto, RejectionTemplate rejectionTemplate) {

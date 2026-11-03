@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class ForceRequestDto {
 
     // Police Station Details
-    private Integer policeStationId;
+    private Long policeStationId;
 
     private LocalDate requestDate;
 

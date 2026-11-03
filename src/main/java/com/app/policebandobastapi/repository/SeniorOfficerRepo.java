@@ -6,5 +6,9 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface SeniorOfficerRepo extends JpaRepository<SeniorOfficer, Integer> {
+public interface SeniorOfficerRepo extends JpaRepository<SeniorOfficer, Long> {
+
+    boolean existsByMobile(String mobile);
+
+    boolean existsByMobileAndIdNot(String mobile, Long id);
 }

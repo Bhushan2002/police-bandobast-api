@@ -15,9 +15,9 @@ public class PoliceStation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String name;
-    private String headquarterId;
+    private Long headquarterId;
     private String district;
     private String taluka;
     private String village;

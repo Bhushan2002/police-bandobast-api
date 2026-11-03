@@ -10,10 +10,10 @@ public interface DesignationService {
 
     public List<DesignationDto> getAllDesignation();
 
-    public DesignationDto findById(int id);
+    public DesignationDto findById(Long id);
 
-    public DesignationDto updateDesignation(int id, DesignationDto designation);
+    public DesignationDto updateDesignation(Long id, DesignationDto designation);
 
-    public void deleteDesignation(int id);
+    public void deleteDesignation(Long id);
 
 }

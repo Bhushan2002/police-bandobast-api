@@ -5,9 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ShiftRepo extends JpaRepository<Shift, Integer> {
+public interface ShiftRepo extends JpaRepository<Shift, Long> {
 
     boolean existsByNameIgnoreCase(String name);
 
-    boolean existsByNameIgnoreCaseAndIdNot(String name, int id);
+    boolean existsByNameIgnoreCaseAndIdNot(String name, Long id);
 }

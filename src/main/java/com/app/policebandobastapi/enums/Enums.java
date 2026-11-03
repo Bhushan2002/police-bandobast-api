@@ -5,12 +5,9 @@ public final class Enums {
     private Enums() {
     }
 
-
     public enum Role {
         SUPER_ADMIN, HEADQUARTER, POLICE_STATION, SENIOR_OFFICER, STAFF
     }
-
-
 
     public enum RecordStatus {
         ACTIVE, INACTIVE
@@ -44,7 +41,27 @@ public final class Enums {
         PENDING_TODAY, PRESENT, CHECKED_OUT, ABSENT,
     }
 
+    public enum GpsStatus {
+        TAGGED, NO_GPS, OUT_OF_RANGE
+    }
+
     public enum noticeStatus {
         ISSUED, CLOSED
+    }
+
+    public enum NoticeDecision {
+        SATISFACTORY_CLOSED, WARNING_CLOSED, ONE_DAY_PAY_CUT, PRELIMINARY_INQUIRY, DEPARTMENTAL_INQUIRY
+    }
+
+    public enum NoticeReason {
+        ABSENT_ON_DUTY, LATE_ARRIVAL, LEFT_POINT, DERELICTION, MISCONDUCT, OTHER
+    }
+
+    public enum GpsTagMode {
+        OPTIONAL, REQUIRED, OFF
+    }
+
+    public enum InkColor {
+        BLUE, BLACK
     }
 }

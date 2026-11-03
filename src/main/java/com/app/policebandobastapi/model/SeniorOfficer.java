@@ -18,12 +18,12 @@ import java.util.Date;
 public class SeniorOfficer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String name;
-    private String DesignationId;
+    private Long DesignationId;
     private String mobile;
     private String emial;
-    private int departmentId;
+    private Long departmentId;
     private String serviceBookNo;
     private String post;
     private Date appointmentDateFrom;

@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PoliceStationDto {
-    private int id;
+    private Long id;
     private String name;
-    private String headquarterId;
+    private Long headquarterId;
     private String district;
     private String taluka;
     private String village;

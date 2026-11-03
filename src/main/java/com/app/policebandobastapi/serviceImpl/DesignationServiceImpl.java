@@ -13,6 +13,7 @@ import com.app.policebandobastapi.exception.ResourceNotFoundException;
 import com.app.policebandobastapi.model.Designation;
 import com.app.policebandobastapi.repository.DesignationRepo;
 import com.app.policebandobastapi.service.DesignationService;
+import com.app.policebandobastapi.util.ValidationUtils;
 
 @Service
 public class DesignationServiceImpl implements DesignationService {
@@ -28,7 +29,7 @@ public class DesignationServiceImpl implements DesignationService {
         }
 
         Designation designation = toEntity(designationDto);
-        designation.setId(0); // let the database generate the id
+        designation.setId(null); // let the database generate the id
         designation.setName(name);
         if (designation.getStatus() == null) {
             designation.setStatus(RecordStatus.ACTIVE);
@@ -46,12 +47,12 @@ public class DesignationServiceImpl implements DesignationService {
     }
 
     @Override
-    public DesignationDto findById(int id) {
+    public DesignationDto findById(Long id) {
         return toDto(getExisting(id));
     }
 
     @Override
-    public DesignationDto updateDesignation(int id, DesignationDto designationDto) {
+    public DesignationDto updateDesignation(Long id, DesignationDto designationDto) {
         Designation existing = getExisting(id);
         String name = validateName(designationDto);
         if (repo.existsByNameIgnoreCaseAndIdNot(name, id)) {
@@ -66,20 +67,21 @@ public class DesignationServiceImpl implements DesignationService {
     }
 
     @Override
-    public void deleteDesignation(int id) {
+    public void deleteDesignation(Long id) {
         Designation existing = getExisting(id);
         repo.delete(existing);
     }
 
-    private Designation getExisting(int id) {
+    private Designation getExisting(Long id) {
         return repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Designation", id));
     }
 
     private String validateName(DesignationDto dto) {
-        if (dto == null || dto.getName() == null || dto.getName().isBlank()) {
-            throw new BadRequestException("Designation name is required");
+        if (dto == null) {
+            throw new BadRequestException("Designation details are required");
         }
+        ValidationUtils.requireText(dto.getName(), "Designation name", 150);
         return dto.getName().trim();
     }
 

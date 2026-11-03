@@ -22,7 +22,7 @@ public class PoliceStationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PoliceStationDto> findById(@PathVariable int id) {
+    public ResponseEntity<PoliceStationDto> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
@@ -32,12 +32,12 @@ public class PoliceStationController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PoliceStationDto> update(@PathVariable int id, @RequestBody PoliceStationDto policeStation) {
+    public ResponseEntity<PoliceStationDto> update(@PathVariable Long id, @RequestBody PoliceStationDto policeStation) {
         return ResponseEntity.ok(service.updatePoliceStation(id, policeStation));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deletePoliceStation(id);
         return ResponseEntity.noContent().build();
     }

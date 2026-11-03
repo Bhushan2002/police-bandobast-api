@@ -16,11 +16,11 @@ import lombok.NoArgsConstructor;
 public class RejectionTemplate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id ;
+    private Long id;
     private String title;
     @Enumerated(EnumType.STRING)
     private Enums.TemplateType type;
-    private int policeStationId;
+    private Long policeStationId;
     private String description;
     @Enumerated(EnumType.STRING)
     private RecordStatus status;

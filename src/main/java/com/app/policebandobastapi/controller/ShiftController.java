@@ -22,7 +22,7 @@ public class ShiftController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ShiftDto> findById(@PathVariable int id) {
+    public ResponseEntity<ShiftDto> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
@@ -32,12 +32,12 @@ public class ShiftController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ShiftDto> update(@PathVariable int id, @RequestBody ShiftDto shift) {
+    public ResponseEntity<ShiftDto> update(@PathVariable Long id, @RequestBody ShiftDto shift) {
         return ResponseEntity.ok(service.updateShift(id, shift));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deleteShift(id);
         return ResponseEntity.noContent().build();
     }

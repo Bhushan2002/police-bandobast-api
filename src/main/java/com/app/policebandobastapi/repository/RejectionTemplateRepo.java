@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface RejectionTemplateRepo extends JpaRepository<RejectionTemplate, Integer> {
+public interface RejectionTemplateRepo extends JpaRepository<RejectionTemplate, Long> {
 }

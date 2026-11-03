@@ -15,15 +15,15 @@ import lombok.NoArgsConstructor;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
     private Enums.Role role;
-    private int headquarterId;
-    private int policeStationId;
-    private int seniorOfficeId;
-    private int staffId;
+    private Long headquarterId;
+    private Long policeStationId;
+    private Long seniorOfficeId;
+    private Long staffId;
     @Enumerated(EnumType.STRING)
     private RecordStatus status;
     private String lastLoginAt;

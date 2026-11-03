@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class InstructionTemplate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String title;
     private String description;
     @Enumerated(EnumType.STRING)

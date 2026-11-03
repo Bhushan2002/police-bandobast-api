@@ -10,10 +10,10 @@ public interface ShiftService {
 
     public List<ShiftDto> getAllShift();
 
-    public ShiftDto findById(int id);
+    public ShiftDto findById(Long id);
 
-    public ShiftDto updateShift(int id, ShiftDto shift);
+    public ShiftDto updateShift(Long id, ShiftDto shift);
 
-    public void deleteShift(int id);
+    public void deleteShift(Long id);
 
 }

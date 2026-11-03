@@ -5,9 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DepartmentRepo extends JpaRepository<Department, Integer> {
+public interface DepartmentRepo extends JpaRepository<Department, Long> {
 
     boolean existsByNameIgnoreCase(String name);
 
-    boolean existsByNameIgnoreCaseAndIdNot(String name, int id);
+    boolean existsByNameIgnoreCaseAndIdNot(String name, Long id);
 }

@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShiftDto {
-    private int id;
+    private Long id;
     private String name;
     @JsonFormat(pattern = "HH:mm")
     private LocalTime startTime;

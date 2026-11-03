@@ -10,10 +10,10 @@ public interface RejectionTemplateService {
 
     public List<RejectionTemplateDto> getAllRejectionTemplate();
 
-    public RejectionTemplateDto findById(int id);
+    public RejectionTemplateDto findById(Long id);
 
-    public RejectionTemplateDto updateRejectionTemplate(int id, RejectionTemplateDto rejectionTemplate);
+    public RejectionTemplateDto updateRejectionTemplate(Long id, RejectionTemplateDto rejectionTemplate);
 
-    public void deleteRejectionTemplate(int id);
+    public void deleteRejectionTemplate(Long id);
 
 }

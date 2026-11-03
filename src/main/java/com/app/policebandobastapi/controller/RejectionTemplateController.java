@@ -22,7 +22,7 @@ public class RejectionTemplateController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RejectionTemplateDto> findById(@PathVariable int id) {
+    public ResponseEntity<RejectionTemplateDto> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
@@ -32,12 +32,12 @@ public class RejectionTemplateController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RejectionTemplateDto> update(@PathVariable int id, @RequestBody RejectionTemplateDto rejectionTemplate) {
+    public ResponseEntity<RejectionTemplateDto> update(@PathVariable Long id, @RequestBody RejectionTemplateDto rejectionTemplate) {
         return ResponseEntity.ok(service.updateRejectionTemplate(id, rejectionTemplate));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deleteRejectionTemplate(id);
         return ResponseEntity.noContent().build();
     }

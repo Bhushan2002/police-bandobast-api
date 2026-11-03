@@ -8,10 +8,13 @@ import org.springframework.stereotype.Service;
 import com.app.policebandobastapi.dto.PoliceStationDto;
 import com.app.policebandobastapi.enums.Enums.RecordStatus;
 import com.app.policebandobastapi.exception.BadRequestException;
+import com.app.policebandobastapi.exception.DuplicateResourceException;
 import com.app.policebandobastapi.exception.ResourceNotFoundException;
 import com.app.policebandobastapi.model.PoliceStation;
+import com.app.policebandobastapi.repository.HeadquarterRepo;
 import com.app.policebandobastapi.repository.PoliceStationRepo;
 import com.app.policebandobastapi.service.PoliceStationService;
+import com.app.policebandobastapi.util.ValidationUtils;
 
 @Service
 public class PoliceStationServiceImpl implements PoliceStationService {
@@ -19,9 +22,13 @@ public class PoliceStationServiceImpl implements PoliceStationService {
     @Autowired
     private PoliceStationRepo repo;
 
+    @Autowired
+    private HeadquarterRepo headquarterRepo;
+
     @Override
     public PoliceStationDto addPoliceStation(PoliceStationDto policeStationDto) {
         validate(policeStationDto);
+        checkDuplicates(policeStationDto, null);
 
         PoliceStation policeStation = new PoliceStation();
         copyToEntity(policeStationDto, policeStation);
@@ -41,14 +48,15 @@ public class PoliceStationServiceImpl implements PoliceStationService {
     }
 
     @Override
-    public PoliceStationDto findById(int id) {
+    public PoliceStationDto findById(Long id) {
         return toDto(getExisting(id));
     }
 
     @Override
-    public PoliceStationDto updatePoliceStation(int id, PoliceStationDto policeStationDto) {
+    public PoliceStationDto updatePoliceStation(Long id, PoliceStationDto policeStationDto) {
         PoliceStation existing = getExisting(id);
         validate(policeStationDto);
+        checkDuplicates(policeStationDto, id);
 
         RecordStatus currentStatus = existing.getStatus();
         copyToEntity(policeStationDto, existing);
@@ -59,26 +67,44 @@ public class PoliceStationServiceImpl implements PoliceStationService {
     }
 
     @Override
-    public void deletePoliceStation(int id) {
+    public void deletePoliceStation(Long id) {
         PoliceStation existing = getExisting(id);
         repo.delete(existing);
     }
 
-    private PoliceStation getExisting(int id) {
+    private PoliceStation getExisting(Long id) {
         return repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Police station", id));
     }
 
     private void validate(PoliceStationDto dto) {
-        if (dto == null || dto.getName() == null || dto.getName().isBlank()) {
-            throw new BadRequestException("Police station name is required");
+        if (dto == null) {
+            throw new BadRequestException("Police station details are required");
+        }
+        ValidationUtils.requireText(dto.getName(), "Police station name", 200);
+        ValidationUtils.requireExists(headquarterRepo, dto.getHeadquarterId(), "Headquarter");
+        ValidationUtils.requireText(dto.getDistrict(), "District", 100);
+        ValidationUtils.optionalText(dto.getTaluka(), "Taluka", 100);
+        ValidationUtils.optionalText(dto.getVillage(), "Village", 100);
+        ValidationUtils.optionalText(dto.getCity(), "City", 100);
+        ValidationUtils.optionalPincode(dto.getPincode());
+        ValidationUtils.optionalText(dto.getLandline(), "Landline number", 20);
+        ValidationUtils.requireMobile(dto.getMobile(), "Mobile number");
+    }
+
+    // id = null on create, so the IdNot check is only used on update
+    private void checkDuplicates(PoliceStationDto dto, Long id) {
+        boolean mobileTaken = id == null ? repo.existsByMobile(dto.getMobile())
+                : repo.existsByMobileAndIdNot(dto.getMobile(), id);
+        if (mobileTaken) {
+            throw new DuplicateResourceException("Police station already exists with mobile number " + dto.getMobile());
         }
     }
 
     private void copyToEntity(PoliceStationDto dto, PoliceStation policeStation) {
         policeStation.setName(dto.getName().trim());
         policeStation.setHeadquarterId(dto.getHeadquarterId());
-        policeStation.setDistrict(dto.getDistrict());
+        policeStation.setDistrict(dto.getDistrict().trim());
         policeStation.setTaluka(dto.getTaluka());
         policeStation.setVillage(dto.getVillage());
         policeStation.setCity(dto.getCity());

@@ -22,7 +22,7 @@ public class InstructionTemplateController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<InstructionTemplateDto> findById(@PathVariable int id) {
+    public ResponseEntity<InstructionTemplateDto> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
@@ -32,12 +32,12 @@ public class InstructionTemplateController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<InstructionTemplateDto> update(@PathVariable int id, @RequestBody InstructionTemplateDto instructionTemplate) {
+    public ResponseEntity<InstructionTemplateDto> update(@PathVariable Long id, @RequestBody InstructionTemplateDto instructionTemplate) {
         return ResponseEntity.ok(service.updateInstructionTemplate(id, instructionTemplate));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deleteInstructionTemplate(id);
         return ResponseEntity.noContent().build();
     }

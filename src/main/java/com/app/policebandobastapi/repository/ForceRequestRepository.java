@@ -17,12 +17,12 @@ public interface ForceRequestRepository extends JpaRepository<ForceRequest, Long
     // Get force request of a particular police station for a Bandobast
     Optional<ForceRequest> findByBandobastIdAndPoliceStationId(
             Long bandobastId,
-            int policeStationId
+            Long policeStationId
     );
 
     // Check whether a police station has already submitted a request
     boolean existsByBandobastIdAndPoliceStationId(
             Long bandobastId,
-            int policeStationId
+            Long policeStationId
     );
 }

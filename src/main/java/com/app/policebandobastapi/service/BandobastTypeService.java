@@ -10,10 +10,10 @@ public interface BandobastTypeService {
 
     public List<BandobastTypeDto> getAllBandobastType();
 
-    public BandobastTypeDto findById(int id);
+    public BandobastTypeDto findById(Long id);
 
-    public BandobastTypeDto updateBandobastType(int id, BandobastTypeDto bandobastType);
+    public BandobastTypeDto updateBandobastType(Long id, BandobastTypeDto bandobastType);
 
-    public void deleteBandobastType(int id);
+    public void deleteBandobastType(Long id);
 
 }

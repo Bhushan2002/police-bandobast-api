@@ -13,6 +13,7 @@ import com.app.policebandobastapi.exception.ResourceNotFoundException;
 import com.app.policebandobastapi.model.Department;
 import com.app.policebandobastapi.repository.DepartmentRepo;
 import com.app.policebandobastapi.service.DepartmentService;
+import com.app.policebandobastapi.util.ValidationUtils;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
@@ -28,7 +29,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
 
         Department department = toEntity(departmentDto);
-        department.setId(0); // let the database generate the id
+        department.setId(null); // let the database generate the id
         department.setName(name);
         if (department.getStatus() == null) {
             department.setStatus(RecordStatus.ACTIVE);
@@ -46,12 +47,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public DepartmentDto findById(int id) {
+    public DepartmentDto findById(Long id) {
         return toDto(getExisting(id));
     }
 
     @Override
-    public DepartmentDto updateDepartment(int id, DepartmentDto departmentDto) {
+    public DepartmentDto updateDepartment(Long id, DepartmentDto departmentDto) {
         Department existing = getExisting(id);
         String name = validateName(departmentDto);
         if (repo.existsByNameIgnoreCaseAndIdNot(name, id)) {
@@ -66,20 +67,21 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public void deleteDepartment(int id) {
+    public void deleteDepartment(Long id) {
         Department existing = getExisting(id);
         repo.delete(existing);
     }
 
-    private Department getExisting(int id) {
+    private Department getExisting(Long id) {
         return repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Department", id));
     }
 
     private String validateName(DepartmentDto dto) {
-        if (dto == null || dto.getName() == null || dto.getName().isBlank()) {
-            throw new BadRequestException("Department name is required");
+        if (dto == null) {
+            throw new BadRequestException("Department details are required");
         }
+        ValidationUtils.requireText(dto.getName(), "Department name", 150);
         return dto.getName().trim();
     }
 

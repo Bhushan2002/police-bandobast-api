@@ -10,7 +10,7 @@ import com.app.policebandobastapi.model.ForceRequest;
 import com.app.policebandobastapi.model.PoliceStation;
 import com.app.policebandobastapi.repository.BandobastRepository;
 import com.app.policebandobastapi.repository.ForceRequestRepository;
-import com.app.policebandobastapi.repository.PoliceStationRepository;
+import com.app.policebandobastapi.repository.PoliceStationRepo;
 import com.app.policebandobastapi.service.ForceRequestService;
 
 import org.springframework.stereotype.Service;
@@ -24,12 +24,12 @@ public class ForceRequestServiceImpl implements ForceRequestService {
 
     private final ForceRequestRepository forceRequestRepository;
     private final BandobastRepository bandobastRepository;
-    private final PoliceStationRepository policeStationRepository;
+    private final PoliceStationRepo policeStationRepository;
 
     public ForceRequestServiceImpl(
             ForceRequestRepository forceRequestRepository,
             BandobastRepository bandobastRepository,
-            PoliceStationRepository policeStationRepository) {
+            PoliceStationRepo policeStationRepository) {
 
         this.forceRequestRepository = forceRequestRepository;
         this.bandobastRepository = bandobastRepository;
@@ -110,8 +110,8 @@ public class ForceRequestServiceImpl implements ForceRequestService {
                 getPoliceStation(dto.getPoliceStationId());
 
         // Check duplicate only if the station is being changed
-        if (forceRequest.getPoliceStation().getId()
-                != dto.getPoliceStationId()) {
+        if (!forceRequest.getPoliceStation().getId()
+                .equals(dto.getPoliceStationId())) {
 
             boolean alreadyExists =
                     forceRequestRepository.existsByBandobastIdAndPoliceStationId(
@@ -152,7 +152,7 @@ public class ForceRequestServiceImpl implements ForceRequestService {
     }
 
     // Get Police Station
-    private PoliceStation getPoliceStation(Integer policeStationId) {
+    private PoliceStation getPoliceStation(Long policeStationId) {
 
         if (policeStationId == null) {
             throw new BadRequestException("Police Station ID is required");
